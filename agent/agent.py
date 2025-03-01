@@ -1,5 +1,5 @@
 """
-Read the NEAR Devs News issue #50 from February 17th, 2025
+Read the NEAR Devs News issue #50 from February 25th, 2025: https://dev.near.org/newsletter?id=007f756046
 """
 
 import json
@@ -7,14 +7,15 @@ import asyncio
 from nearai.agents.environment import Environment
 
 def run(env: Environment):
-    # YADAYADA! I only react to on-chain calls passed as events from neardevnews-issue50.frol.near contract
-    # https://docs.near.ai/near_events/
-    #
+    if env.signer_account_id != 'hub.ai-is-near.near':
+        env.add_reply("I only react to on-chain calls passed as events from neardevnews-issue50.frol.near contract. Learn more at: https://docs.near.ai/near_events/")
+        return
+
     message = env.get_last_message()
     try:
         message_data = json.loads(message["content"])
     except json.JSONDecodeError:
-        env.add_reply("I only react to on-chain calls passed as events from neardevnewsletter-issue50.frol.near contract. Read the NEAR Devs News issue #50 from February 17th, 2025")
+        env.add_reply("I only react to on-chain calls passed as events from neardevnewsletter-issue50.frol.near contract. Read the [NEAR Devs News issue #50](https://dev.near.org/newsletter?id=007f756046) from February 25th, 2025")
         return
 
     request_id = message_data.get("request_id")
